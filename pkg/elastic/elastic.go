@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/elastic/go-elasticsearch/v7/esapi"
@@ -23,7 +22,9 @@ type Client struct {
 	ES *elasticsearch.Client
 }
 
-func NewClient(cfg Config) (*Client, error) {
+var ClientInstance *Client
+
+func Init(cfg Config) (*Client, error) {
 	esCfg := elasticsearch.Config{
 		Addresses: cfg.Addresses,
 		Username:  cfg.Username,
@@ -49,26 +50,9 @@ func NewClient(cfg Config) (*Client, error) {
 	}
 
 	log.Println("✅ Connected to Elasticsearch successfully")
-	return &Client{ES: es}, nil
-}
 
-func NewDefaultClient() (*Client, error) {
-	addresses := []string{getEnv("ELASTIC_ADDRESS", "http://localhost:9200")}
-	username := getEnv("ELASTIC_USERNAME", "")
-	password := getEnv("ELASTIC_PASSWORD", "")
-
-	return NewClient(Config{
-		Addresses: addresses,
-		Username:  username,
-		Password:  password,
-	})
-}
-
-func getEnv(key, fallback string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return fallback
+	ClientInstance = &Client{ES: es}
+	return ClientInstance, nil
 }
 
 type LogEntry struct {
