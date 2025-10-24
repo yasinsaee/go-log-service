@@ -5,7 +5,7 @@ import (
 	"github.com/yasinsaee/go-log-service/pkg/elastic"
 )
 
-func InitElastic() {
+func initElastic() {
 	elastic.Init(elastic.Config{
 		Addresses: []string{config.GetEnv("ELASTIC_ADDRESS", "http://localhost:9200")},
 		Username:  config.GetEnv("ELASTIC_USERNAME", ""),

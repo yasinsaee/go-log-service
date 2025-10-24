@@ -13,7 +13,7 @@ import (
 )
 
 type Config struct {
-	Addresses []string
+	Addresses []string 
 	Username  string
 	Password  string
 }

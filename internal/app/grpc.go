@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func StartGRPCServer() {
+func startGRPCServer() {
 	port := config.GetEnv("PORT", "50051")
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
